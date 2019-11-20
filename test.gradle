@@ -1,0 +1,136 @@
+apply from:'config.gradle'
+
+//task task2 {
+//    println("hello task2")
+//}
+//
+//task task3(dependsOn: task2) {
+//    println("hello task3")
+//}
+
+
+//task fun1 {
+//    // println("fun1被执行")
+//    config {
+//        name = "第一个项目"
+//        info = "第一个项目信息"
+//        logs()
+//        fun2 { a, b ->
+//            println("第一个值${a}===第二个值${b}")
+//        }
+//    }
+//}
+
+//class Project {
+//    private String name
+//    private String info
+//
+//    def logs() {
+//        println("${name}===${info}")
+//    }
+//}
+//
+//def config(Closure<Project> c) {
+//    Project p = new Project()
+//    c.delegate = p
+//    c.setResolveStrategy(Closure.DELEGATE_FIRST)
+//    c(p)
+//}
+//
+//def fun2(Closure c) {
+//    for (int i in 1..10) {
+//        c(i, ++i)
+//    }
+//}
+//
+//tasks.create("task1") {
+//    doFirst {
+//        println("hello,hcy2019")
+//    }
+//    doLast {
+//        logger.debug("bye,hcy2019")
+//        println("bye,hcy2019!!!")
+//    }
+//}
+//
+//
+//task  task5{
+//    doLast{
+//        println("task5task5===")
+//    }
+//}
+//ext.age=2019
+//ext{
+//    name="hcy2019"
+//    address="guangzhou"
+//}
+//task5.doFirst{
+//    def name="66666"
+//    println("打印自定义属性::${age}==${name}==${address}")
+//    println("task5.doFirst===")
+//}
+//
+//task5.doLast{
+//    println project.hasProperty("task5")
+//    println("task5.doLast===")
+//}
+
+//def Task task1 = task("task1")
+//task1.doLast {
+//    println("创建任务task1")
+//}
+
+//task task4{
+//    println("这是task4的任务")
+//}
+//task task3{
+//    description "这是task3的任务的功能描述"
+//    dependsOn task4
+//    println("这是task3的任务")
+//    println("${task3.description}")
+//}
+//def Task task2 = task("task2",
+//        group: BasePlugin.BUILD_GROUP,
+//        description: "这是task2的任务的功能描述",
+//dependsOn: task3)
+//task2.doLast {
+//    println("配置任务的分组===${task2.group}")
+//    println("配置任务的描述===${task2.description}")
+//    println("配置任务的依赖===${task2.dependsOn}")
+//}
+
+//tasks.create("task5"){
+//    description "这是task5的描述"
+//}
+
+//tasks.create("task6"){
+////    description "task6描述"
+////    group "工具"
+////    println("……………………")
+////}
+////tasks["task6"].doLast {
+////
+////    println("666666")
+////}
+//task  task6{
+//    task6.enabled=false
+//}
+//
+//task task5(type: MyTask) {
+//    task5.mustRunAfter(task6)
+//}
+//
+//
+//class MyTask extends DefaultTask {
+//    @TaskAction
+//    def doSelf() {
+//        // println
+//        println("MyTask====${tag1}")
+//    }
+//}
+
+task task6{
+    println("MyTask====${tag1}")
+}
+
+
