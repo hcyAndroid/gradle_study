@@ -9,11 +9,15 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
 }
+apply from: "../config.gradle"
+
+
 
 android {
     compileSdkVersion "android-29"
     //配置签名信息
     signingConfigs {
+
         htjy_test_release {
             storeFile file("../htjy")  //签名证书文件
             storePassword 'education123' //签名证书文件的密码
@@ -26,7 +30,7 @@ android {
         minSdkVersion 23 //指定app最低支持的android版本
         targetSdkVersion 29
         versionCode 1       //内部版本号
-        versionName "1.0"   //app的版本名称
+        versionName   getAppVersionNameFromGit()//app的版本名称-一般指主版本号+副版本号+补丁号android["versionName"]
         testApplicationId "com.hcy.myproject.test" //配置测试app的包名
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,6 +44,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             multiDexEnabled true //启用自动拆分多个Dex的功能，主要用于处理>65535的方法
             applicationIdSuffix '.release' //包名后缀
+            zipAlignEnabled true //打开一个zipalign工具，整理和优化apk文件的工具，提高系统和应用的运行效率，更快的读写apk中的资源，降低内存的使用
             signingConfig signingConfigs.htjy_test_release  //配置默认的签名信息
         }
         debug {
@@ -49,11 +54,41 @@ android {
             shrinkResources true //自动清理未使用的资源，这是使用必须要打开混淆
             jniDebuggable true //可调试jni
             multiDexEnabled true //启用自动拆分多个Dex的功能，主要用于处理>65535的方法
+            zipAlignEnabled true //打开一个zipalign工具，整理和优化apk文件的工具，提高系统和应用的运行效率，更快的读写apk中的资源，降低内存的使用
             applicationIdSuffix '.debug' //包名后缀
         }
- }
+    }
+    //批量修改生成的apk的文件名
+    applicationVariants.all { variant ->
+        println("打印1111>>>${variant.buildType.name}")
+        variant.outputs.all {
+            outputFileName = "hcy2019_${variant.flavorName}_${variant.versionName}_${buildTime()}.apk"
+//            if (output.outputFile != null&&output.outputFile.name.endsWith('.apk')) {
+//                //def apk=new File(output.outputFile.getParent(),"hcy2019.apk")
+//                //output.outputFile=apk
+//
+//                println("打印2222>>>${output.outputFile.name}")
+//            }
+        }
+
+    }
 
 
+}
+
+//从git中获取应用的版本名称
+def getAppVersionNameFromGit() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'describe', "--abbrev=0", "--tags"
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+def buildTime() {
+    def date = new Date()
+    return date.format("yyyy_MM_dd_HH_mm_ss")
 }
 
 dependencies {

@@ -1,4 +1,8 @@
 ext {
-    tag1='ddddddd'
-    tag2='eeeeeee'
+    tag1 = 'ddddddd'
+    tag2 = 'eeeeeee'
+    android = [
+            versionCode: "1.0",
+            versionName: "1.0.0"
+    ]
 }
