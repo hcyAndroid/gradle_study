@@ -1,8 +1,24 @@
 ext {
-    tag1 = 'ddddddd'
+    tag1 = 'om.hcy.myproject'
     tag2 = 'eeeeeee'
     android = [
-            versionCode: "1.0",
-            versionName: "1.0.0"
+            versionCodes     : "1.0",
+            versionName     : "1.0.0",
+            minSdkVersion   : 23,
+            targetSdkVersion: 29
+    ]
+    libDependencies = [
+            logger          : 'com.orhanobut:logger:2.2.0',
+            constraintlayout: 'androidx.constraintlayout:constraintlayout:1.1.3'
+    ]
+    commonDependencies = [
+            appcompatx: 'androidx.appcompat:appcompat:1.0.2',
+            ktx       : 'androidx.core:core-ktx:1.0.2',
+            kt        : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    ]
+    testDependencies = [
+            junit    : 'junit:junit:4.12',
+            junitx   : 'androidx.test.ext:junit:1.1.0',
+            espressox: 'androidx.test.espresso:espresso-core:3.1.1'
     ]
 }

@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val string = resources.getString(R.string.product_name)
         tv.text = AppUtils.getInstance().getPackageName(this@MainActivity)
         Log.i("测试>>>>", "hcy29000==${AppUtils.getInstance().getPackageName(this@MainActivity)}")
     }

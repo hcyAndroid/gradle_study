@@ -12,7 +12,6 @@ plugins {
 apply from: "../config.gradle"
 
 
-
 android {
     compileSdkVersion "android-29"
     //配置签名信息
@@ -26,15 +25,58 @@ android {
         }
     }
     defaultConfig {
-        applicationId "com.hcy.myproject" //指定app的包名
+        applicationId tag1//指定app的包名
         minSdkVersion 23 //指定app最低支持的android版本
         targetSdkVersion 29
-        versionCode 1       //内部版本号
-        versionName   getAppVersionNameFromGit()//app的版本名称-一般指主版本号+副版本号+补丁号android["versionName"]
+        versionCode getAppVersionCodeFromGit()       //内部版本号
+        versionName getAppVersionNameFromGit()//app的版本名称-一般指主版本号+副版本号+补丁号android["versionName"]
         testApplicationId "com.hcy.myproject.test" //配置测试app的包名
+        //Instrument测试
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //  //版本名后面添加一句话，意思就是flavor dimension 它的维度就是该版本号，这样维度就是都是统一的了
+        flavorDimensions "versionCode"
+    }
+    //配置adb操作选项
+    adbOptions {
+        //设置adb连接的超时时间
+        timeOutInMs = 5 * 1000  //5秒
+        installOptions '-r', '-s'
+    }
+    //lint
+    lintOptions {
+        //用于lint发现错误时是否退出gradle 构建
+        abortOnError true
+        //用于配置错误的输出是否应该显示绝对路径
+        absolutePaths true
+        //检查所有警告包括哪些默认被关闭的问题
+        checkAllWarnings true
+        //warningAsErrors true
+        check 'NewApi'
+    }
+    //配置dex选项
+    dexOptions {
+        //是否启用dex增量模式，默认不启用，虽然速度快但有限制，可能会导致不工作,慎启
+        incremental false
+        //执行dx命令分配的最大内存，主要解决GC overhead问题,默认只有1g
+        javaMaxHeapSize '4g'
+        //函数>65535 需强制启动jumbo模式，才能构建成功
+        jumboMode true
+        //运行dx命令时使用的线程数量
+        threadCount 3
+        //配置是否执行dex Libraries 库工程，开启会提高构建速度，但影响clean，默认true
+        preDexLibraries true
+    }
+    //配置java编译选项
+    compileOptions {
+        //配置源文件编码
+        encoding = "utf-8"
+        //配置java源代码的编译级别
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        //配置成功java字节码的版本
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    //配置构建的类型
     buildTypes {
         release {
             debuggable false   //不可调试，表象log打不出来
@@ -62,7 +104,7 @@ android {
     applicationVariants.all { variant ->
         println("打印1111>>>${variant.buildType.name}")
         variant.outputs.all {
-            outputFileName = "hcy2019_${variant.flavorName}_${variant.versionName}_${buildTime()}.apk"
+            outputFileName = "${variant.versionCode}_hcy2019_${variant.flavorName}_${variant.versionName}_${buildTime()}.apk"
 //            if (output.outputFile != null&&output.outputFile.name.endsWith('.apk')) {
 //                //def apk=new File(output.outputFile.getParent(),"hcy2019.apk")
 //                //output.outputFile=apk
@@ -70,12 +112,54 @@ android {
 //                println("打印2222>>>${output.outputFile.name}")
 //            }
         }
-
     }
+    //声明配置渠道的维度
+    flavorDimensions 'company', 'version'
 
+    //配置渠道
+    productFlavors {
+        htjy {
+            //可以给每个渠道都设置不同的包名
+            applicationId "com.hcy.myproject.htjy"
+            buildConfigField "String", "TEST_URL", '"http://www.baidu.com"'
+            buildConfigField "Boolean", "tag01", 'true'
+            resValue "string", "product_name", "宏途教育"
+            //对android库项目混淆
+            consumerProguardFiles 'proguard-rules.pro', 'proguard-android.txt'
+            //设置测试包名
+            testApplicationId 'com.hcy.myproject.htjy.test'
+            //是否为功能测试
+            testFunctionalTest true
+            //是否启用分析功能
+            testHandleProfiling true
+            //设置维度
+            dimension 'company'
 
+        }
+        ygsj {
+            applicationId "com.hcy.myproject.ygsj"
+            testApplicationId 'com.hcy.myproject.ygsj.test'
+            dimension 'company'
+        }
+        wyt {
+            applicationId "com.hcy.myproject.wyt"
+            testApplicationId 'com.hcy.myproject.wyt.test'
+            dimension 'company'
+        }
+        ali {
+            dimension 'version'
+        }
+    }
 }
-
+//从git中根据tag的数量跟新版本号
+def getAppVersionCodeFromGit() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'tag', '--list'
+        standardOutput = stdout
+    }
+    return stdout.toString().split("\n").size()
+}
 //从git中获取应用的版本名称
 def getAppVersionNameFromGit() {
     def stdout = new ByteArrayOutputStream()
@@ -93,12 +177,9 @@ def buildTime() {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation commonDependencies['kt']
+    implementation commonDependencies['appcompatx']
+    implementation commonDependencies['ktx']
     implementation project(path: ':utilslib')
+
 }

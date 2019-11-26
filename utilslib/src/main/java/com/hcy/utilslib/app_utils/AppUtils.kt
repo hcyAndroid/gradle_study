@@ -2,6 +2,8 @@ package com.hcy.utilslib.app_utils
 
 import android.content.Context
 
+
+
 /**
  *@创建人：hcy
  *@创建时间：2019-10-09
@@ -29,4 +31,8 @@ class AppUtils private constructor() {
     fun getPackageName(context: Context): String {
         return context.packageManager.getPackageInfo(context.packageName, 0).packageName
     }
+
+//    fun getPackageName(): String {
+//        return BuildConfig.APPLICATION_ID
+//    }
 }
