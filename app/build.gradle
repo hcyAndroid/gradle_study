@@ -14,6 +14,9 @@ apply from: "../config.gradle"
 
 android {
     compileSdkVersion "android-29"
+    dataBinding{
+        enabled=true
+    }
     //配置签名信息
     signingConfigs {
 
@@ -52,6 +55,10 @@ android {
         checkAllWarnings true
         //warningAsErrors true
         check 'NewApi'
+        //
+        htmlOutput new File("${buildDir}/lintResports/lint-result.html")
+        //忽略警告
+        ignoreWarnings true
     }
     //配置dex选项
     dexOptions {
@@ -181,5 +188,10 @@ dependencies {
     implementation commonDependencies['appcompatx']
     implementation commonDependencies['ktx']
     implementation project(path: ':utilslib')
+    api libDependencies['constraintlayout']
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
+    //                                       👇 依赖当前平台所对应的平台库
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 
 }

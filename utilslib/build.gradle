@@ -2,12 +2,14 @@ apply from: "../config.gradle"
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
     defaultPublishConfig "release"
-
-
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 29
@@ -30,9 +32,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation commonDependencies['kt']
     implementation commonDependencies['appcompatx']
+    api commonDependencies['kotlinx_coroutines']
     implementation commonDependencies['ktx']
     implementation libDependencies['logger']
-    implementation libDependencies['constraintlayout']
+    api libDependencies['constraintlayout']
+    kapt "com.android.databinding:compiler:$rootProject.ext.gradle_version"
     testImplementation testDependencies['junit']
     androidTestImplementation testDependencies['junitx']
     androidTestImplementation testDependencies['espressox']
