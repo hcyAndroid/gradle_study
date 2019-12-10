@@ -22,4 +22,12 @@ ext {
             junitx   : 'androidx.test.ext:junit:1.1.0',
             espressox: 'androidx.test.espresso:espresso-core:3.1.1'
     ]
+    jetpack=[
+            ktx: "androidx.core:core-ktx:1.1.0",
+            lifecycle_ktx:"androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc03",
+            livedata_ktx:"androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03",
+            viewmodel_ktx:"androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc03",
+            databinding_ktx:"com.android.databinding:compiler:$rootProject.ext.gradle_version",
+            lifecycle_extensions_ktx: 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    ]
 }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:xxx="http://schemas.android.com/apk/res-auto">
+
+    <data class="MyDDD">
+
+        <import
+            alias="vv"
+            type="android.view.View"></import>
+
+        <variable
+            name="textid"
+            type="int" />
+
+        <variable
+            name="imgsid"
+            type="int" />
+
+<!--        <variable-->
+<!--            name="imageId"-->
+<!--            type="android.graphics.drawable.Drawable" />-->
+
+        <variable
+            name="handler"
+            type="com.hcy.myproject.testViewModel.MyHandler" />
+
+        <variable
+            name="list"
+            type="java.util.List&lt;String&gt;" />
+
+        <variable
+            name="userList"
+            type="java.util.List&lt;com.hcy.myproject.databindingtest.DBUser&gt;" />
+
+        <variable
+            name="index"
+            type="int" />
+
+        <variable
+            name="colorChange"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context="com.hcy.myproject.databindingtest.DataBindingTestActivity">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{list[index],default=@string/app_name}"
+            android:textColor="#f00"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="100dp"
+            android:onClick="@{handler::onClickTest}"
+            android:text="@{@string/app_name}"
+            android:textColor="@{colorChange?@color/colorPrimary:@color/colorAccent}"
+            android:textSize="18sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(view)->handler.buttonClick(view,index,list,userList)}"
+            android:text="@{userList[index].firstName}"
+            android:visibility="@{vv.VISIBLE}" />
+
+        <!--        android:src="@{imageId}"-->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            xxx:image="@{imgsid}"></ImageView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{textid,default=@string/app_name}" />
+
+    </LinearLayout>
+</layout>

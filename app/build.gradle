@@ -5,17 +5,21 @@
 //apply plugin: 'kotlin-android-extensions'
 //DSL 应用插件
 plugins {
+
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 apply from: "../config.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 
 android {
     compileSdkVersion "android-29"
-    dataBinding{
-        enabled=true
+    dataBinding {
+        enabled = true
     }
     //配置签名信息
     signingConfigs {
@@ -192,6 +196,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
     //                                       👇 依赖当前平台所对应的平台库
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-
+    //implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    kapt jetpack['databinding_ktx']
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

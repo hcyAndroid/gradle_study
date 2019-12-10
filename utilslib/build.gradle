@@ -2,7 +2,7 @@ apply from: "../config.gradle"
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-kapt'  //kotlin 与databind共存
 
 android {
     compileSdkVersion 29
@@ -36,7 +36,12 @@ dependencies {
     implementation commonDependencies['ktx']
     implementation libDependencies['logger']
     api libDependencies['constraintlayout']
-    kapt "com.android.databinding:compiler:$rootProject.ext.gradle_version"
+    api jetpack['ktx']
+    api jetpack['lifecycle_ktx']
+    api jetpack['livedata_ktx']
+    api jetpack['viewmodel_ktx']
+    api jetpack['lifecycle_extensions_ktx']
+    kapt jetpack['databinding_ktx']
     testImplementation testDependencies['junit']
     androidTestImplementation testDependencies['junitx']
     androidTestImplementation testDependencies['espressox']
